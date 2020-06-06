@@ -1,0 +1,4 @@
+/Users/thomaskunze/Projects/cppalgorithms/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/thomaskunze/Projects/cppalgorithms/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/thomaskunze/Projects/cppalgorithms/cmake-build-debug/CMakeFiles/algorithms.dir
+/Users/thomaskunze/Projects/cppalgorithms/cmake-build-debug/CMakeFiles/tests.dir
