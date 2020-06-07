@@ -30,5 +30,10 @@ Prerequisites
 *.exe
 *.out
 *.app
+
+# IDEA
+.idea
+
+# CMAKE
 cmake-build-debug
 cmake-build-release

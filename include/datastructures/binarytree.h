@@ -1,0 +1,22 @@
+//
+// Created by Thomas Kunze on 06.06.20.
+//
+#pragma once
+
+#include <memory>
+#include <vector>
+
+#include <datastructures/binarynode.h>
+
+class BinaryTree {
+  std::shared_ptr<BinaryNode> root = nullptr;
+  void insert(std::shared_ptr<BinaryNode> node, int value);
+
+public:
+  BinaryTree()= default;;
+  explicit BinaryTree(const std::vector<int>& values);
+  std::shared_ptr<BinaryNode> getRoot() const;
+  void insert(int value);
+};
+
+
