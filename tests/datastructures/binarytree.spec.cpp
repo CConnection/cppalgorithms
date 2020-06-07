@@ -299,4 +299,31 @@ SCENARIO("Binary Search Tree", "[bst]") {
 	  }
 	}
   }
+
+  GIVEN("Traverse tree inorder") {
+    WHEN("tree is empty") {
+      THEN("result is empty"){
+		std::vector<int> expected = {};
+		auto tree = BinaryTree();
+
+		const auto numbers = tree.inorder();
+
+		auto matchExpression = Catch::Matchers::Equals(expected);
+		REQUIRE_THAT(numbers, matchExpression);
+      }
+    }
+
+    WHEN("tree is not empty") {
+      THEN("return values in ascending order") {
+		std::vector<int> expected = {1,4,7,9,10,15,20};
+		std::vector<int> values = {10,4,7,1,9,20,15};
+		auto tree = BinaryTree(values);
+
+		const auto numbers = tree.inorder();
+
+		auto matchExpression = Catch::Matchers::Equals(expected);
+		REQUIRE_THAT(numbers, matchExpression);
+      }
+    }
+  }
 }

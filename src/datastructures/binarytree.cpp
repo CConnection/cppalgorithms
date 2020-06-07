@@ -143,3 +143,23 @@ std::shared_ptr<BinaryNode> BinaryTree::maximum(std::shared_ptr<BinaryNode> node
 	return node;
   }
 }
+
+std::vector<int> BinaryTree::inorder() {
+  std::vector<int> result = {};
+  if(this->root == nullptr) {
+    return result;
+  }
+
+  this->inorder(result, this->root);
+  return result;
+}
+
+void BinaryTree::inorder(std::vector<int> &numbers, std::shared_ptr<BinaryNode> node) {
+  if(node->getLeftSubtree()) {
+    inorder(numbers, node->getLeftSubtree());
+  }
+  numbers.push_back(node->getValue());
+  if(node->getRightSubtree()) {
+    inorder(numbers, node->getRightSubtree());
+  }
+}

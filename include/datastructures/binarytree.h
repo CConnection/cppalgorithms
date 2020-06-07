@@ -14,6 +14,7 @@ class BinaryTree {
   std::shared_ptr<BinaryNode> search(std::shared_ptr<BinaryNode> node, int value) const;
   std::shared_ptr<BinaryNode> minimum(std::shared_ptr<BinaryNode> node) const;
   std::shared_ptr<BinaryNode> maximum(std::shared_ptr<BinaryNode> node) const;
+  void inorder(std::vector<int>& numbers, std::shared_ptr<BinaryNode> node);
 
 public:
   BinaryTree()= default;;
@@ -24,6 +25,7 @@ public:
   void deleteNode(std::shared_ptr<BinaryNode> node);
   std::shared_ptr<BinaryNode> minimum() const;
   std::shared_ptr<BinaryNode> maximum() const;
+  std::vector<int> inorder();
 };
 
 
