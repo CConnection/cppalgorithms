@@ -23,6 +23,31 @@ void BinaryTree::insert(int value) {
   }
 }
 
+
+void BinaryTree::insert(std::shared_ptr<BinaryNode> node, int value) {
+  if(value <= node->getValue()) {
+	const auto subnode = node->getLeftSubtree();
+	if (subnode == nullptr) {
+	  auto newNode = std::make_shared<BinaryNode>(value);
+	  newNode->setParent(node);
+	  node->setLeftSubtree(newNode);
+	} else {
+	  this->insert(subnode, value);
+	}
+  } else {
+	const auto subnode = node->getRightSubtree();
+
+	if (subnode == nullptr) {
+	  auto newNode = std::make_shared<BinaryNode>(value);
+	  newNode->setParent(node);
+	  node->setRightSubtree(newNode);
+	} else{
+	  this->insert(subnode, value);
+	}
+  }
+}
+
+
 std::shared_ptr<BinaryNode> BinaryTree::search(int value) const {
   if (this->root == nullptr) {
     return nullptr;
@@ -31,40 +56,69 @@ std::shared_ptr<BinaryNode> BinaryTree::search(int value) const {
   return this->search(this->root, value);
 }
 
-void BinaryTree::insert(std::shared_ptr<BinaryNode> node, int value) {
-	if(value <= node->getValue()) {
-	  const auto subnode = node->getLeftSubtree();
-	  if (subnode == nullptr) {
-	    auto newNode = std::make_shared<BinaryNode>(value);
-	    newNode->setParent(node);
-	    node->setLeftSubtree(newNode);
-	  } else {
-	    this->insert(subnode, value);
-	  }
+std::shared_ptr<BinaryNode> BinaryTree::search(std::shared_ptr<BinaryNode> node, int value) const {
+  if(node == nullptr) {
+	return nullptr;
+  } else if (node->getValue() == value) {
+	return node;
+  } else {
+	if (value < node->getValue()) {
+	  return this->search(node->getLeftSubtree(), value);
 	} else {
-	  const auto subnode = node->getRightSubtree();
-
-	  if (subnode == nullptr) {
-		auto newNode = std::make_shared<BinaryNode>(value);
-		newNode->setParent(node);
-		node->setRightSubtree(newNode);
-	  } else{
-	    this->insert(subnode, value);
-	  }
+	  return this->search(node->getRightSubtree(), value);
 	}
+  }
+}
+
+void BinaryTree::deleteNode(std::shared_ptr<BinaryNode> node) {
+  if(node->getLeftSubtree() == nullptr && node->getRightSubtree() == nullptr) {
+	if (node->getParent()->getValue() >= node->getValue()) {
+	  node->getParent()->setLeftSubtree(nullptr);
+	} else {
+	  node->getParent()->setRightSubtree(nullptr);
+	}
+  } else if (node->getLeftSubtree() && node->getRightSubtree() == nullptr) {
+	node->getParent()->setLeftSubtree(node->getLeftSubtree());
+  } else if (node->getRightSubtree() && node->getLeftSubtree() == nullptr) {
+	node->getParent()->setRightSubtree(node->getRightSubtree());
+  } else {
+	// TODO: FULL ROTATE
+  }
+}
+
+std::shared_ptr<BinaryNode> BinaryTree::minimum() const {
+  if (this->root == nullptr) {
+    return nullptr;
+  } else if (this->root->getLeftSubtree() == nullptr) {
+    return this->root;
+  } else {
+    return this->minimum(this->root);
+  }
+}
+
+std::shared_ptr<BinaryNode> BinaryTree::minimum(std::shared_ptr<BinaryNode> node) const {
+  if (node->getLeftSubtree()) {
+	return minimum(node->getLeftSubtree());
+  } else {
+    return node;
+  }
+}
+
+std::shared_ptr<BinaryNode> BinaryTree::maximum() const {
+  if (this->root == nullptr) {
+	return nullptr;
+  } else if (this->root->getRightSubtree() == nullptr) {
+	return this->root;
+  } else {
+	return this->maximum(this->root);
+  }
 }
 
 
-std::shared_ptr<BinaryNode> BinaryTree::search(std::shared_ptr<BinaryNode> node, int value) const {
-  if(node == nullptr) {
-    return nullptr;
-  } else if (node->getValue() == value) {
-    return node;
+std::shared_ptr<BinaryNode> BinaryTree::maximum(std::shared_ptr<BinaryNode> node) const {
+  if (node->getRightSubtree()) {
+	return maximum(node->getRightSubtree());
   } else {
-    if (value < node->getValue()) {
-      return this->search(node->getLeftSubtree(), value);
-    } else {
-      return this->search(node->getRightSubtree(), value);
-    }
+	return node;
   }
 }
