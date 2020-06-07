@@ -187,15 +187,35 @@ SCENARIO("Binary Search Tree", "[bst]") {
 
 	WHEN("node has two children") {
 	  WHEN("node is a left subtree") {
-		THEN("parent has child as left subtree") {
-		  const auto expected = 0;
-		  const std::vector<int> values = {2, 1, expected};
-		  auto tree = BinaryTree(values);
-		  auto node = tree.getRoot()->getLeftSubtree();
+		WHEN("minimum of right subtree has no right child") {
+		  THEN("replace node with minimum of right subtree") {
+			const auto expected = 0;
+			const std::vector<int> values = {3, -1, -2, 2, expected};
+			auto tree = BinaryTree(values);
+			auto node = tree.getRoot()->getLeftSubtree();
 
-		  tree.deleteNode(node);
+			tree.deleteNode(node);
 
-		  REQUIRE(tree.getRoot()->getLeftSubtree()->getValue() == expected);
+			REQUIRE(tree.getRoot()->getLeftSubtree()->getValue() == expected);
+		  }
+		} WHEN("minimum of right subtree has a right child") {
+		  THEN(
+			  "replace node with minimum of right subtree and replace minimum right subtree with right child of minimum") {
+			const auto expected = 0;
+			const std::vector<int> values = {3, -1, -2, 2, expected, 1};
+			auto tree = BinaryTree(values);
+			auto node = tree.getRoot()->getLeftSubtree();
+
+			tree.deleteNode(node);
+			REQUIRE(tree.getRoot()->getValue() == 3);
+			REQUIRE(tree.getRoot()->getLeftSubtree()->getValue() == expected);
+			REQUIRE(tree.getRoot()->getLeftSubtree()->getLeftSubtree()->getValue() == -2);
+			REQUIRE(tree.getRoot()->getLeftSubtree()->getRightSubtree()->getValue() == 2);
+			REQUIRE(tree.getRoot()->getLeftSubtree()->getRightSubtree()->getLeftSubtree()->getValue() == 1);
+			REQUIRE(tree.getRoot()->getLeftSubtree()->getRightSubtree()->getLeftSubtree()->getLeftSubtree() == nullptr);
+			REQUIRE(
+				tree.getRoot()->getLeftSubtree()->getRightSubtree()->getLeftSubtree()->getRightSubtree() == nullptr);
+		  }
 		}
 	  }
 
@@ -215,16 +235,16 @@ SCENARIO("Binary Search Tree", "[bst]") {
   }
 
   GIVEN("Minimum") {
-    WHEN("Tree is empty") {
-      THEN("has no minimum") {
-        const auto tree = BinaryTree();
-        const auto node = tree.minimum();
+	WHEN("Tree is empty") {
+	  THEN("has no minimum") {
+		const auto tree = BinaryTree();
+		const auto node = tree.minimum();
 
-        REQUIRE(node == nullptr);
-      }
-    }
+		REQUIRE(node == nullptr);
+	  }
+	}
 
-    WHEN("tree has only root") {
+	WHEN("tree has only root") {
 	  THEN("return root as minimum") {
 		const auto expected = 0;
 		const std::vector<int> values = {expected};
@@ -233,12 +253,12 @@ SCENARIO("Binary Search Tree", "[bst]") {
 
 		REQUIRE(node->getValue() == expected);
 	  }
-    }
+	}
 
 	WHEN("tree has more than one right subtree") {
 	  THEN("return leftmost value") {
 		const auto expected = 0;
-		const std::vector<int> values = {3,2,1,expected};
+		const std::vector<int> values = {3, 2, 1, expected};
 		const auto tree = BinaryTree(values);
 		const auto node = tree.minimum();
 
@@ -271,7 +291,7 @@ SCENARIO("Binary Search Tree", "[bst]") {
 	WHEN("tree has more than one right subtree") {
 	  THEN("return rightmost value") {
 		const auto expected = 20;
-		const std::vector<int> values = {1,2,3,expected};
+		const std::vector<int> values = {1, 2, 3, expected};
 		const auto tree = BinaryTree(values);
 		const auto node = tree.maximum();
 

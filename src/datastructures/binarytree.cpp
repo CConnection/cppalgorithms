@@ -78,11 +78,32 @@ void BinaryTree::deleteNode(std::shared_ptr<BinaryNode> node) {
 	  node->getParent()->setRightSubtree(nullptr);
 	}
   } else if (node->getLeftSubtree() && node->getRightSubtree() == nullptr) {
-	node->getParent()->setLeftSubtree(node->getLeftSubtree());
+	if (node->getParent()->getLeftSubtree()->getValue() == node->getValue()) {
+	  node->getParent()->setLeftSubtree(node->getLeftSubtree());
+	} else {
+	  node->getParent()->setRightSubtree(node->getLeftSubtree());
+	}
   } else if (node->getRightSubtree() && node->getLeftSubtree() == nullptr) {
-	node->getParent()->setRightSubtree(node->getRightSubtree());
+	if (node->getParent()->getValue() >= node->getValue()) {
+	  node->getParent()->setLeftSubtree(node->getRightSubtree());
+	} else {
+	  node->getParent()->setRightSubtree(node->getRightSubtree());
+	}
   } else {
-	// TODO: FULL ROTATE
+	 auto minimumNode = this->minimum(node->getRightSubtree());
+
+	 if (minimumNode->getRightSubtree()) {
+	   deleteNode(minimumNode);
+	 }
+
+	 if (node->getParent()->getValue() >= node->getValue()) {
+	   node->getParent()->setLeftSubtree(minimumNode);
+	 } else {
+	   node->getParent()->setRightSubtree(minimumNode);
+	 }
+
+	 minimumNode->setLeftSubtree(node->getLeftSubtree());
+	 minimumNode->setRightSubtree(node->getRightSubtree());
   }
 }
 
