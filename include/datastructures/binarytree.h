@@ -11,12 +11,14 @@
 class BinaryTree {
   std::shared_ptr<BinaryNode> root = nullptr;
   void insert(std::shared_ptr<BinaryNode> node, int value);
+  std::shared_ptr<BinaryNode> search(std::shared_ptr<BinaryNode> node, int value) const;
 
 public:
   BinaryTree()= default;;
   explicit BinaryTree(const std::vector<int>& values);
   std::shared_ptr<BinaryNode> getRoot() const;
   void insert(int value);
+  std::shared_ptr<BinaryNode> search(int value) const;
 };
 
 

@@ -29,6 +29,62 @@ SCENARIO("Binary Search Tree", "[bst]") {
     }
   }
 
+  GIVEN("Searching a node with value") {
+    WHEN("tree is empty") {
+      THEN("returns nullptr"){
+		const auto tree = BinaryTree();
+		const auto node = tree.search(5);
+
+		REQUIRE(node == nullptr);
+      }
+    }
+    WHEN("tree is not empty") {
+      WHEN("value is root") {
+		THEN("returns node with value") {
+		  const auto expected = 1;
+		  const std::vector<int> values = {expected, 2, 3, 4};
+		  const auto tree = BinaryTree(values);
+
+		  const auto node = tree.search(expected);
+
+		  REQUIRE(node->getValue() == expected);
+		}
+	  }
+	  WHEN("value is left subtree node") {
+		THEN("returns node with value") {
+		  const auto expected = 1;
+		  const std::vector<int> values = {2, expected, 3, 4};
+		  const auto tree = BinaryTree(values);
+
+		  const auto node = tree.search(expected);
+
+		  REQUIRE(node->getValue() == expected);
+		}
+	  }
+	  WHEN("value is right subtree node") {
+		THEN("returns node with value") {
+		  const auto expected = 3;
+		  const std::vector<int> values = {2, 1, 3, 4};
+		  const auto tree = BinaryTree(values);
+
+		  const auto node = tree.search(expected);
+
+		  REQUIRE(node->getValue() == expected);
+		}
+	  }
+	  WHEN("value is not in tree") {
+		THEN("returns node with value") {
+		  const std::vector<int> values = {2, 1, 3, 4};
+		  const auto tree = BinaryTree(values);
+
+		  const auto node = tree.search(5);
+
+		  REQUIRE(node == nullptr);
+		}
+	  }
+    }
+  }
+
   GIVEN("Inserting a value into the tree") {
     WHEN("the tree is empty") {
       THEN ("returns the root node with the inserted value") {
@@ -39,6 +95,43 @@ SCENARIO("Binary Search Tree", "[bst]") {
 
         REQUIRE(tree.getRoot()->getValue() == expected);
       }
+    }
+
+    WHEN("root is not empty and has no children") {
+      WHEN("inserted value is smaller than root value") {
+		THEN("inserts the node as left subtree") {
+		  const auto expected = 2;
+		  const std::vector<int> root = {5};
+		  auto tree = BinaryTree(root);
+
+		  tree.insert(expected);
+
+		  REQUIRE(tree.getRoot()->getLeftSubtree()->getValue() == expected);
+		}
+      }
+	  WHEN("inserted value is equal to root value") {
+		THEN("inserts the node as left subtree") {
+		  const auto expected = 5;
+		  const std::vector<int> root = {5};
+		  auto tree = BinaryTree(root);
+
+		  tree.insert(expected);
+
+		  REQUIRE(tree.getRoot()->getLeftSubtree()->getValue() == expected);
+		}
+	  }
+
+	  WHEN("inserted value is greater than root value") {
+		THEN("inserts the node as right subtree") {
+		  const auto expected = 10;
+		  const std::vector<int> root = {5};
+		  auto tree = BinaryTree(root);
+
+		  tree.insert(expected);
+
+		  REQUIRE(tree.getRoot()->getRightSubtree()->getValue() == expected);
+		}
+	  }
     }
   }
 }
